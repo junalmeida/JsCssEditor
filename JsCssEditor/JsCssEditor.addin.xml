@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AddIn 
+        name="Javascript and Style Sheet Editor" 
+        author="Marcos Almeida Jr." 
+        copyright="MIT" 
+        description="Outlining, code completion, syntax coloring." 
+        addInManagerHidden="preinstalled" 
+        id="JsCssEditor" 
+        namespace="MonoDevelop" 
+        url="http://about.me/junalmeida" 
+        category="IDE extensions" 
+        version="2.8.6.4">
+ <Runtime>
+     <Import assembly="JsCssEditor.dll" />
+ </Runtime>
+    
+<Dependencies>
+     <Addin id="Core" version="2.8.6.4"/>
+     <Addin id="Ide" version="2.8.6.4"/>
+     <Addin id="DesignerSupport" version="2.8.6.4"/>
+     <Addin id="SourceEditor2" version="2.8.6.4"/>
+ </Dependencies>
+    
+ <Extension path="/MonoDevelop/ProjectModel/DomParser">
+     <Parser class="JsCssEditor.JavascriptDocumentParser" id="JavascriptDocumentParser" fileExtensions=".js" />
+     <Parser class="JsCssEditor.CssDocumentParser" id="CssDocumentParser" fileExtensions=".css" />
+ </Extension>
+</AddIn>

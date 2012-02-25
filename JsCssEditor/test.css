@@ -1,0 +1,168 @@
+﻿/*#region css reset*/
+body
+{
+}
+
+input:focus {
+    outline: none;
+}
+/*#endregion*/
+
+/*#region fluid 960*/
+
+.grid-1-12, .grid-2-12, .grid-3-12, .grid-4-12, .grid-5-12, .grid-6-12, .grid-7-12, .grid-8-12, .grid-9-12, .grid-10-12, .grid-11-12, .grid-12-12 {
+	display: block;
+	position:relative;
+	float:left;
+	margin-left:1%;
+	margin-right:1%;
+	padding: 0.8% 0.5% 1%;
+	height:100%;
+	
+    /*ie7*/
+    *margin-left:.8%;
+    *margin-right:.8%;
+    *padding: 0.8% 0.25% 1%;
+    /*ie7*/
+}
+
+/* 12-column Grid (thanks for Fluid 960 Grid System) */
+.grid-1-12 {width: 5.333%;}
+.grid-2-12 {width: 13.666%;}
+.grid-3-12 {width: 22%;}
+.grid-4-12 {width: 30.333%;}
+.grid-5-12 {width: 38.666%;}
+.grid-6-12 {width: 47%;}
+.grid-7-12 {width: 55.333%;}
+.grid-8-12 {width: 63.666%;}
+.grid-9-12 {width: 72%;}
+.grid-10-12 {width: 80.333%;}
+.grid-11-12 {width: 88.666%;}
+.grid-12-12 {width: 97%;}
+
+/* 12-column prefix (Fluid 960) */
+
+.prefix-3-12
+{
+	padding-left: 25%;
+}
+
+.prefix-6-12
+{
+	padding-left: 50%;
+}
+
+.prefix-9-12
+{
+	padding-left: 75%;
+}
+
+.prefix-1-12
+{
+	padding-left: 8.333%;
+}
+
+.prefix-2-12
+{
+	padding-left: 16.666%;
+}
+
+.prefix-4-12
+{
+	padding-left: 33.333%;
+}
+
+.prefix-5-12
+{
+	padding-left: 41.666%;
+}
+
+.prefix-7-12
+{
+	padding-left: 58.333%;
+}
+
+.prefix-8-12
+{
+	padding-left: 66.666%;
+}
+
+.prefix-10-12
+{
+	padding-left: 83.333%;
+}
+
+.prefix-11-12
+{
+	padding-left: 91.666%;
+}
+
+/*#endregion*/
+
+/*#region breadcrumbs*/
+
+.breadcrumbs 
+{
+    margin-bottom:10px;
+}
+.breadcrumbs li 
+{
+    display: inline-block; 
+}
+
+.breadcrumbs span, .breadcrumbs a
+{
+    display: inline-block; 
+    height: 16px;
+
+    color:#780234; 
+    
+    font-size:0.7em; 
+    line-height: 1em;
+    
+    text-decoration: none;
+    letter-spacing:0;
+    font-weight: normal;
+    
+    padding-top:1px;
+    padding-left: 16px; 
+    margin-top: 0px; 
+    
+    background: url(../img/breadcrumb-arrow.png) top left no-repeat;
+}
+
+.breadcrumbs li:last-child span
+{
+    color: #000000;
+}
+
+.breadcrumbs li:first-child span,
+.breadcrumbs li:first-child a
+{
+    background: url(../img/breadcrumb-home.png) top left no-repeat;
+    padding-left: 19px; 
+}
+
+
+.breadcrumbs a:hover 
+{
+    color:#006CBA;
+    text-decoration: underline;
+}
+.breadcrumbs 
+{
+    font-size: 15px; 
+}
+.breadcrumbs strong 
+{
+    color: #8D8D8D; 
+    text-transform: uppercase; 
+    font-weight: normal
+}
+
+.arrow-breadcrumb 
+{
+    margin-left:3px; 
+    color:#a2a2a2;
+}
+/*#endregion*/
