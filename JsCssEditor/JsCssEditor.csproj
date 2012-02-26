@@ -33,6 +33,7 @@
     <Reference Include="MonoDevelop.Core, Version=2.6.0.0, Culture=neutral">
       <Private>False</Private>
       <Package>monodevelop</Package>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System.Core" />
   </ItemGroup>
