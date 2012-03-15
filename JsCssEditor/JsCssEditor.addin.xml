@@ -9,7 +9,7 @@
         namespace="MonoDevelop" 
         url="http://junalmeida.github.com/JsCssEditor/" 
         category="IDE extensions" 
-        version="2.8.6.5">
+        version="2.9">
  <Runtime>
      <Import assembly="JsCssEditor.dll" />
  </Runtime>

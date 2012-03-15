@@ -40,7 +40,8 @@ namespace JsCssEditor
         private bool findFunctions;
         private string[] regionPairs;
         private List<int> usedChars;
-     
+        const int regionNameMax = 40;
+
         public JsCssParsedDocument (string fileName, string fileContent, string[] regionPairs, string[] commentPairs, bool findFunctions) : base(fileName)
         {
             this.lineEnding = "";
@@ -77,10 +78,10 @@ namespace JsCssEditor
                                                                  this.fileContent.IndexOf (endText, startChar) - (startChar + endText.Length)).Trim ();
                             regionName = regionName
                                 .Replace (startText, "").Replace (endText, "").Replace ("\r", "").Replace ("\n", "").Trim ();
-                            if (regionName.Length > 20) {
-                                var space = regionName.IndexOf (" ", 18);
-                                if (space > 25 || space == -1)
-                                    space = 20;
+                            if (regionName.Length > regionNameMax) {
+                                var space = regionName.IndexOf (" ", regionNameMax - 2);
+                                if (space > regionNameMax + 5 || space == -1)
+                                    space = regionNameMax;
                                 regionName = startText + " " + regionName.Substring (0, space).Trim () + " " + endText;
                             }
                                 
@@ -99,38 +100,47 @@ namespace JsCssEditor
                     do {
                         endChar = this.fileContent.LastIndexOf (startText, endChar - 1);
                     } while (this.usedChars.Contains(endChar));
-                    
+
+                    var startChar = endChar;
+
                     if (endChar > -1) {
-                        this.usedChars.Add (endChar);
-                        var startChar = endChar;
+
                         while (true) {
                             var startChar2 = this.fileContent.LastIndexOf (startText, startChar - 1);
-                            if (startChar2 == -1)
+                            if (startChar2 == -1) {
+                                startChar = 0;
                                 break;
-                            else if (this.fileContent.Substring (startChar2, startChar - startChar2).Count (c => c == this.lineEnding [0]) == 1)
+                            } else if (this.fileContent.Substring (startChar2, startChar - startChar2).Count (c => c == this.lineEnding [0]) <= 1)
                                 startChar = startChar2;
                             else
                                 break;
+
                         }
 
-                        var regionName = this.fileContent.Substring (startChar + startText.Length, endChar - startChar - startText.Length).Trim ();
-                        regionName = regionName
+                        if (startChar < endChar) {
+                            var regionName = this.fileContent.Substring (startChar + startText.Length, endChar - startChar - startText.Length).Trim ();
+                            regionName = regionName
                                 .Replace (startText, "").Replace ("\r", "").Replace ("\n", "").Trim ();
-                        if (regionName.Length > 20) {
-                            var space = regionName.IndexOf (" ", 18);
-                            if (space > 25 || space == -1)
-                                space = 20;
-                            regionName = startText + " " + regionName.Substring (0, space).Trim ();
-                        }
+                            if (regionName.Length > regionNameMax) {
+                                var space = regionName.IndexOf (" ", regionNameMax - 2);
+                                if (space > regionNameMax + 5 || space == -1)
+                                    space = regionNameMax;
+                                regionName = startText + " " + regionName.Substring (0, space).Trim ();
+                            }
                                 
-                        var startLine = this.fileContent.Substring (0, startChar).Count (chr => chr == lineEnding [0]) + 1;
-                        var endLine = this.fileContent.Substring (startChar, endChar - startChar).Count (chr => chr == lineEnding [0]) + startLine + 1;
-                        if (startLine != endLine)
-                            regions.Add (new FoldingRegion (regionName, new DomRegion (startLine, endLine), FoldType.Comment));
-                    }  
-                        
+                            var startLine = this.fileContent.Substring (0, startChar).Count (chr => chr == lineEnding [0]) + 1;
+                            var endLine = this.fileContent.Substring (startChar, endChar - startChar).Count (chr => chr == lineEnding [0]) + startLine + 1;
+                            if (startLine != endLine)
+                                regions.Add (new FoldingRegion (regionName, new DomRegion (startLine, endLine), FoldType.Comment));
+
+                            this.usedChars.Add (startChar);
+                            this.usedChars.Add (endChar);
+                        }
+                    }
+
+                    return startChar;
                 }
-                return -1;
+
             } catch (Exception exception) {
                 LoggingService.LogError ("Error in JsCssEditor: " + exception.GetType ().Name, exception);
                 return -1;
@@ -197,13 +207,13 @@ namespace JsCssEditor
 
                             var regionName = this.fileContent.Substring (functionChar, startChar - functionChar).Trim ();
                             if (regionName.Count (c => c == this.lineEnding [0]) <= 1) {
-                                if (regionName.Length > 30) {
-                                    var space = regionName.IndexOf (" ", 27);
-                                    if (space > 35 || space == -1)
-                                        space = 30;
+                                if (regionName.Length > regionNameMax) {
+                                    var space = regionName.IndexOf (" ", regionNameMax - 2);
+                                    if (space > regionNameMax + 5 || space == -1)
+                                        space = regionNameMax;
                                     regionName = regionName.Substring (0, space).Trim ();
-                                    if (regionName.EndsWith (endBracket))
-                                        regionName = regionName.Substring (0, regionName.Length - endBracket.Length).Trim ();
+                                    if (regionName.EndsWith (startBracket))
+                                        regionName = regionName.Substring (0, regionName.Length - startBracket.Length).Trim ();
                                 }
                                 
                                 

@@ -1,4 +1,5 @@
-﻿/// <reference path="~/Scripts/jquery.dropcomplete.js" />
+﻿// References Of Blah Blah Blah Bleh Blhi bluh
+/// <reference path="~/Scripts/jquery.dropcomplete.js" />
 /// <reference path="~/Scripts/jquery.qtip.min.js" />
 /// <reference path="~/Scripts/jquery-1.7.min.js" />
 
@@ -38,6 +39,10 @@ ooooo
 
 var test = function(blah)
 {
+    function C(bluh)
+    {
+    }
+
 }
 
 //aaaa
