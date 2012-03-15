@@ -42,7 +42,12 @@ namespace JsCssEditor
             string[] regionPairs = new string[] { 
                 "/*#region", "/*#endregion" 
             };
-            return new JsCssParsedDocument (fileName, fileContent, regionPairs, null);
+            
+            string[] commentPairs = new string[] { 
+                "/*", "*/" 
+            };
+            
+            return new JsCssParsedDocument (fileName, fileContent, regionPairs, commentPairs, false);
         }
     }
 

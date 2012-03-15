@@ -1,5 +1,5 @@
 // 
-// JavascriptDocumentParser.cs
+// Test.cs
 //  
 // Author:
 //       Marcos Almeida Junior <junalmeida@gmail.com>
@@ -24,40 +24,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using MonoDevelop.Projects.Dom.Parser;
-using MonoDevelop.Projects.Dom;
+using NUnit.Framework;
+using System.IO;
+using JsCssEditor;
 
-namespace JsCssEditor
+namespace Test
 {
-    public class JavascriptDocumentParser : AbstractParser
+    [TestFixture()]
+    public class TestFiles
     {
-        
-        public JavascriptDocumentParser ()
+        [Test()]
+        public void TestJs ()
         {
-        }
-        
-        public override bool CanParse (string fileName)
-        {
-            return fileName.ToLower ().EndsWith (".js");
-        }
-
-        public override ParsedDocument Parse (ProjectDom dom, string fileName, string fileContent)
-        {
-            string[] regionPairs = new string[] { 
-                "//#region", "//#endregion", 
-                "/*#region", "/*#endregion" 
-            };
-
-            string[] commentPairs = new string[] { 
-                "//", "//", 
-                "/*", "*/" 
-            };
+            using (var stream = new StreamReader ("../../../JsCssEditor/test.js")) {
+                var parser = new JavascriptDocumentParser ();
+                var parsed = parser.Parse (null, "test.js", stream.ReadToEnd ());
+                parsed.GenerateFolds ();
+            }
             
-            return new JsCssParsedDocument (fileName, fileContent, regionPairs, commentPairs, true);
         }
     }
-
- 
-
 }
 

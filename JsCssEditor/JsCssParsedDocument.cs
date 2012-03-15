@@ -37,10 +37,11 @@ namespace JsCssEditor
         private string[] commentPairs;
         private string fileContent;
         private string lineEnding;
+        private bool findFunctions;
         private string[] regionPairs;
         private List<int> usedChars;
      
-        public JsCssParsedDocument (string fileName, string fileContent, string[] regionPairs, string[] commentPairs) : base(fileName)
+        public JsCssParsedDocument (string fileName, string fileContent, string[] regionPairs, string[] commentPairs, bool findFunctions) : base(fileName)
         {
             this.lineEnding = "";
             
@@ -55,11 +56,85 @@ namespace JsCssEditor
             this.usedChars = new List<int> ();
             this.regionPairs = regionPairs;
             this.commentPairs = commentPairs;
+            this.findFunctions = findFunctions;
         }
 
-        public int FindComment (int startIndex, List<FoldingRegion> regions, string startText, string endText)
+        public int FindComment (int lastIndex, List<FoldingRegion> regions, string startText, string endText)
         {
-            return -1;
+            try {
+                if (startText != endText) {
+                    //do a normal region search
+                    var startChar = this.fileContent.LastIndexOf (startText, lastIndex);
+                    if (!this.usedChars.Contains (startChar)) {
+                        var endChar = startChar;
+                    
+                        do {
+                            endChar = this.fileContent.IndexOf (endText, endChar + 1);
+                        } while (this.usedChars.Contains(endChar));
+                    
+                        if (endChar > startChar) {
+                            var regionName = this.fileContent.Substring (startChar + startText.Length, 
+                                                                 this.fileContent.IndexOf (endText, startChar) - (startChar + endText.Length)).Trim ();
+                            regionName = regionName
+                                .Replace (startText, "").Replace (endText, "").Replace ("\r", "").Replace ("\n", "").Trim ();
+                            if (regionName.Length > 20) {
+                                var space = regionName.IndexOf (" ", 18);
+                                if (space > 25)
+                                    space = 20;
+                                regionName = startText + " " + regionName.Substring (0, space).Trim () + " " + endText;
+                            }
+                                
+                            var startLine = this.fileContent.Substring (0, startChar).Count (chr => chr == lineEnding [0]) + 1;
+                            var endLine = this.fileContent.Substring (startChar, endChar - startChar).Count (chr => chr == lineEnding [0]) + startLine + 1;
+                    
+                            regions.Add (new FoldingRegion (regionName, new DomRegion (startLine, endLine), FoldType.Comment));
+                            this.usedChars.Add (startChar);
+                            this.usedChars.Add (endChar);
+                        }
+                    }
+                    return startChar;
+                } else {
+                    //find comments in sequence
+                    int endChar = lastIndex;
+                    do {
+                        endChar = this.fileContent.LastIndexOf (startText, endChar - 1);
+                    } while (this.usedChars.Contains(endChar));
+                    
+                    if (endChar > -1) {
+                        this.usedChars.Add (endChar);
+                        var startChar = endChar;
+                        while (true) {
+                            var startChar2 = this.fileContent.LastIndexOf (startText, startChar - 1);
+                            if (startChar2 == -1)
+                                break;
+                            else if (this.fileContent.Substring (startChar2, startChar - startChar2).Count (c => c == this.lineEnding [0]) == 1)
+                                startChar = startChar2;
+                            else
+                                break;
+                        }
+
+                        var regionName = this.fileContent.Substring (startChar + startText.Length, endChar - startChar - startText.Length).Trim ();
+                        regionName = regionName
+                                .Replace (startText, "").Replace ("\r", "").Replace ("\n", "").Trim ();
+                        if (regionName.Length > 20) {
+                            var space = regionName.IndexOf (" ", 18);
+                            if (space > 25)
+                                space = 20;
+                            regionName = startText + " " + regionName.Substring (0, space).Trim ();
+                        }
+                                
+                        var startLine = this.fileContent.Substring (0, startChar).Count (chr => chr == lineEnding [0]) + 1;
+                        var endLine = this.fileContent.Substring (startChar, endChar - startChar).Count (chr => chr == lineEnding [0]) + startLine + 1;
+                        if (startLine != endLine)
+                            regions.Add (new FoldingRegion (regionName, new DomRegion (startLine, endLine), FoldType.Comment));
+                    }  
+                        
+                }
+                return -1;
+            } catch (Exception exception) {
+                LoggingService.LogError ("Error in JsCssEditor: " + exception.GetType ().Name, exception);
+                return -1;
+            }
         }
 
         public int FindRegion (int lastIndex, List<FoldingRegion> regions, string startText, string endText)

@@ -21,3 +21,13 @@ function C()
 
 
 //#endregion
+
+//Alone comment
+
+//Hello World
+//Hiiii
+
+/* Hii
+ooooo
+
+*/

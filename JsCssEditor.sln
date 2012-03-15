@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsCssEditor", "JsCssEditor\JsCssEditor.csproj", "{42F8AD9A-3D7D-4249-BE8C-B8BC6C7362B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsCssEditor.Test", "Test\JsCssEditor.Test.csproj", "{A395ACAF-B5DE-4170-A20C-F9A2E482BB5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{42F8AD9A-3D7D-4249-BE8C-B8BC6C7362B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42F8AD9A-3D7D-4249-BE8C-B8BC6C7362B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42F8AD9A-3D7D-4249-BE8C-B8BC6C7362B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A395ACAF-B5DE-4170-A20C-F9A2E482BB5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A395ACAF-B5DE-4170-A20C-F9A2E482BB5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A395ACAF-B5DE-4170-A20C-F9A2E482BB5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A395ACAF-B5DE-4170-A20C-F9A2E482BB5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = JsCssEditor\JsCssEditor.csproj
