@@ -45,4 +45,7 @@ var test = function(blah)
 
 }
 
-//aaaa
+//Another alone comment
+
+/* Alone multiple comment */
+

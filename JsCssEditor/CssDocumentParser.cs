@@ -47,7 +47,7 @@ namespace JsCssEditor
                 "/*", "*/" 
             };
             
-            return new JsCssParsedDocument (fileName, fileContent, regionPairs, commentPairs, false);
+            return new JsCssParsedDocument (fileName, fileContent, regionPairs, commentPairs, true);
         }
     }
 

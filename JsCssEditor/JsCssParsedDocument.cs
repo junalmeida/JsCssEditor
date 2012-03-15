@@ -87,8 +87,9 @@ namespace JsCssEditor
                                 
                             var startLine = this.fileContent.Substring (0, startChar).Count (chr => chr == lineEnding [0]) + 1;
                             var endLine = this.fileContent.Substring (startChar, endChar - startChar).Count (chr => chr == lineEnding [0]) + startLine + 1;
-                    
-                            regions.Add (new FoldingRegion (regionName, new DomRegion (startLine, endLine), FoldType.Comment));
+
+                            if (endLine - startLine > 1)
+                                regions.Add (new FoldingRegion (regionName, new DomRegion (startLine, endLine), FoldType.Comment));
                             this.usedChars.Add (startChar);
                             this.usedChars.Add (endChar);
                         }
@@ -130,7 +131,7 @@ namespace JsCssEditor
                                 
                             var startLine = this.fileContent.Substring (0, startChar).Count (chr => chr == lineEnding [0]) + 1;
                             var endLine = this.fileContent.Substring (startChar, endChar - startChar).Count (chr => chr == lineEnding [0]) + startLine + 1;
-                            if (startLine != endLine)
+                            if (endLine - startLine > 1)
                                 regions.Add (new FoldingRegion (regionName, new DomRegion (startLine, endLine), FoldType.Comment));
 
                             this.usedChars.Add (startChar);
@@ -203,7 +204,21 @@ namespace JsCssEditor
                                     this.fileContent.LastIndexOf (this.lineEnding, functionChar);
                                 if (functionLine > -1)
                                     functionChar = functionLine + this.lineEnding.Length;
+                                else
+                                    functionChar = -1;
                             }
+                        }
+
+                        if (functionChar == -1) {
+                            //css don't have functions
+                            functionChar =
+                                this.fileContent.LastIndexOf (this.lineEnding, startChar - this.lineEnding.Length);
+                            if (functionChar > -1) {
+                                functionChar += this.lineEnding.Length;
+                            }
+                        }
+
+                        if (functionChar > -1) {
 
                             var regionName = this.fileContent.Substring (functionChar, startChar - functionChar).Trim ();
                             if (regionName.Count (c => c == this.lineEnding [0]) <= 1) {
@@ -219,12 +234,15 @@ namespace JsCssEditor
                                 
                                 var startLine = this.fileContent.Substring (0, functionChar).Count (chr => chr == lineEnding [0]) + 1;
                                 var endLine = this.fileContent.Substring (functionChar, endChar - functionChar).Count (chr => chr == lineEnding [0]) + startLine + 1;
-                    
-                                regions.Add (new FoldingRegion (regionName, new DomRegion (startLine, endLine), FoldType.Member));
+                                if (endLine - startLine > 1)
+                                    regions.Add (new FoldingRegion (regionName, new DomRegion (startLine, endLine), FoldType.Member));
+                                
+                                
                                 this.usedChars.Add (startChar);
                                 this.usedChars.Add (endChar);
                             }
                         }
+
                     }
                 }
                 if (startChar > 0)
