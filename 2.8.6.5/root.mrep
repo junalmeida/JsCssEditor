@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Addin>
-    <Url>MonoDevelop.JsCssEditor_2.8.6.5.mpack</Url>
+    <Url>MonoDevelop.JsCssEditor_2.9.mpack</Url>
     <Addin>
       <Id>JsCssEditor</Id>
       <Namespace>MonoDevelop</Namespace>
       <Name>Javascript and Style Sheet Editor</Name>
-      <Version>2.8.6.5</Version>
+      <Version>2.9</Version>
       <BaseVersion />
       <Author>Marcos Almeida Jr.</Author>
       <Copyright>MIT</Copyright>
-      <Url>http://about.me/junalmeida</Url>
+      <Url>http://junalmeida.github.com/JsCssEditor/</Url>
       <Description>Outlining, code completion, syntax coloring.</Description>
       <Category>IDE extensions</Category>
       <Dependencies>
@@ -33,7 +33,7 @@
       </Dependencies>
       <OptionalDependencies />
       <Properties>
-        <Property name="DownloadSize">3918</Property>
+        <Property name="DownloadSize">4845</Property>
       </Properties>
     </Addin>
   </Addin>

@@ -2,7 +2,6 @@
 <Repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Repository>
     <Url>root.mrep</Url>
-    <LastModified>2012-02-26T11:26:04-03:00</LastModified>
+    <LastModified>2012-03-15T08:44:55-03:00</LastModified>
   </Repository>
-  <Name>JsCssEditor Add-In Repository</Name>
 </Repository>
