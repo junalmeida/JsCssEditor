@@ -31,3 +31,13 @@ function C()
 ooooo
 
 */
+
+
+//Eeeee
+//EEeeee
+
+var test = function(blah)
+{
+}
+
+//aaaa

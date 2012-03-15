@@ -79,7 +79,7 @@ namespace JsCssEditor
                                 .Replace (startText, "").Replace (endText, "").Replace ("\r", "").Replace ("\n", "").Trim ();
                             if (regionName.Length > 20) {
                                 var space = regionName.IndexOf (" ", 18);
-                                if (space > 25)
+                                if (space > 25 || space == -1)
                                     space = 20;
                                 regionName = startText + " " + regionName.Substring (0, space).Trim () + " " + endText;
                             }
@@ -118,7 +118,7 @@ namespace JsCssEditor
                                 .Replace (startText, "").Replace ("\r", "").Replace ("\n", "").Trim ();
                         if (regionName.Length > 20) {
                             var space = regionName.IndexOf (" ", 18);
-                            if (space > 25)
+                            if (space > 25 || space == -1)
                                 space = 20;
                             regionName = startText + " " + regionName.Substring (0, space).Trim ();
                         }
@@ -168,7 +168,65 @@ namespace JsCssEditor
                 return -1;
             }
         }
+        
+        public int FindBrackets (int lastIndex, List<FoldingRegion> regions)
+        {
+            var startBracket = "{";
+            var endBracket = "}";
+            
+            try {
+                var startChar = this.fileContent.LastIndexOf (startBracket, lastIndex);
+                if (!this.usedChars.Contains (startChar)) {
+                    var endChar = startChar;
+                    do {
+                        endChar = this.fileContent.IndexOf (endBracket, endChar + 1);
+                    } while (this.usedChars.Contains(endChar));
 
+
+                    if (endChar > startChar) {
+                        var functionChar = 
+                            this.fileContent.LastIndexOf ("function", startChar);
+                        
+                        if (functionChar > -1) {
+                            if (this.fileContent [functionChar - this.lineEnding.Length] != this.lineEnding [0]) {
+                                var functionLine = 
+                                    this.fileContent.LastIndexOf (this.lineEnding, functionChar);
+                                if (functionLine > -1)
+                                    functionChar = functionLine + this.lineEnding.Length;
+                            }
+
+                            var regionName = this.fileContent.Substring (functionChar, startChar - functionChar).Trim ();
+                            if (regionName.Count (c => c == this.lineEnding [0]) <= 1) {
+                                if (regionName.Length > 30) {
+                                    var space = regionName.IndexOf (" ", 27);
+                                    if (space > 35 || space == -1)
+                                        space = 30;
+                                    regionName = regionName.Substring (0, space).Trim ();
+                                    if (regionName.EndsWith (endBracket))
+                                        regionName = regionName.Substring (0, regionName.Length - endBracket.Length).Trim ();
+                                }
+                                
+                                
+                                var startLine = this.fileContent.Substring (0, functionChar).Count (chr => chr == lineEnding [0]) + 1;
+                                var endLine = this.fileContent.Substring (functionChar, endChar - functionChar).Count (chr => chr == lineEnding [0]) + startLine + 1;
+                    
+                                regions.Add (new FoldingRegion (regionName, new DomRegion (startLine, endLine), FoldType.Member));
+                                this.usedChars.Add (startChar);
+                                this.usedChars.Add (endChar);
+                            }
+                        }
+                    }
+                }
+                if (startChar > 0)
+                    startChar --;
+                
+                return startChar;
+            } catch (Exception exception) {
+                LoggingService.LogError ("Error in JsCssEditor: " + exception.GetType ().Name, exception);
+                return -1;
+            }    
+        }
+        
         public override IEnumerable<FoldingRegion> GenerateFolds ()
         {
             this.usedChars.Clear ();
@@ -184,6 +242,10 @@ namespace JsCssEditor
                 for (int k = 0; k < this.commentPairs.Length; k += 2) {
                     for (int m = this.fileContent.Length; m > -1; m = this.FindComment(m, regions, this.commentPairs[k], this.commentPairs[k + 1])) {
                     }
+                }
+            }
+            if (this.findFunctions) {
+                for (int m = this.fileContent.Length; m > -1; m = this.FindBrackets(m, regions)) {
                 }
             }
             return regions;
